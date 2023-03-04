@@ -1,5 +1,5 @@
 {
-  "name": "gyc-chrome-extension",
+  "name": "web-storage-setter",
   "version": "0.0.1",
   "scripts": {
     "dev": "vite",

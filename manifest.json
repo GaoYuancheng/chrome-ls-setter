@@ -1,7 +1,7 @@
 {
-  "name": "gyc-chrome-extension",
+  "name": "web-storage-setter",
   "version": "1.0",
-  "description": "Build an Extension!",
+  "description": "点点鼠标就能实现localStorage的转移",
   "manifest_version": 3,
   "background": {
     "service_worker": "./src/background.js"

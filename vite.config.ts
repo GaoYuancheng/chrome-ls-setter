@@ -4,10 +4,11 @@ import copy from "rollup-plugin-copy"; //引入插件
 import vitePluginImp from "vite-plugin-imp";
 
 import * as path from "path";
+import pck from "./package.json";
 
 // const { NODE_ENV } = process.env;
 // console.log("process.env.", NODE_ENV);
-
+const outputDir = pck.name;
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -35,7 +36,7 @@ export default defineConfig({
   },
 
   build: {
-    outDir: "dist/src",
+    outDir: `${outputDir}/src`,
     // sourcemap: true,
     rollupOptions: {
       input: {
@@ -53,13 +54,13 @@ export default defineConfig({
           targets: [
             {
               src: "./manifest.json",
-              dest: "./dist",
+              dest: `./${outputDir}`,
               // transform: (contents, filename) =>
               //   contents.toString().replace(/\.\/dist\//g, "./"), // ./dist/ => ./
             }, //执行拷贝
             {
               src: "./src/assets",
-              dest: "./dist/src",
+              dest: `./${outputDir}/src`,
             }, //执行拷贝
           ],
         }),

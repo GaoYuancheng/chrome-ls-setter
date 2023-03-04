@@ -148,6 +148,7 @@ const LocalStorageSetter = () => {
         >
           清空
         </Button>
+
         {/* <Button
           onClick={async () => {
             const data =
@@ -157,6 +158,13 @@ const LocalStorageSetter = () => {
           size="small"
         >
           获取
+        </Button> */}
+        {/* <Button
+          onClick={() => {
+            chrome.storage.local.clear();
+          }}
+        >
+          清空chromeSL
         </Button> */}
       </div>
 
@@ -196,15 +204,17 @@ const LocalStorageSetter = () => {
       <div>
         <div>
           <span className={styles.label}>可用key</span>
-          <Checkbox
-            indeterminate={indeterminate}
-            onChange={(e) => {
-              setSelectLSKeys(e.target.checked ? localStorageKeysList : []);
-            }}
-            checked={checkAll}
-          >
-            全选
-          </Checkbox>
+          {localStorageKeysList.length > 0 && (
+            <Checkbox
+              indeterminate={indeterminate}
+              onChange={(e) => {
+                setSelectLSKeys(e.target.checked ? localStorageKeysList : []);
+              }}
+              checked={checkAll}
+            >
+              全选
+            </Checkbox>
+          )}
         </div>
         <div className={styles.checkboxArea}>
           <Checkbox.Group
