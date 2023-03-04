@@ -36,7 +36,7 @@ export default defineConfig({
 
   build: {
     outDir: "dist/src",
-    // sourcemap: NODE_ENV === "development",
+    // sourcemap: true,
     rollupOptions: {
       input: {
         // contentJs: path.resolve(__dirname, "./src/contentJs.ts"),

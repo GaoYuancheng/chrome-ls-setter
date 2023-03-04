@@ -3,6 +3,8 @@ import React from "react";
 import { Tabs } from "antd";
 import LocalStorageSetter from "./components/LocalStorageSetter";
 import CookieSetter from "./components/CookieSetter";
+import "./index.less";
+import styles from "./index.module.less";
 
 const tabList = [
   {
@@ -18,7 +20,11 @@ const tabList = [
 ];
 
 const App: React.FC = () => {
-  return <Tabs defaultActiveKey="LocalStorage" items={tabList} />;
+  return (
+    <div className={styles.chromeStorageChanger}>
+      <Tabs size="small" defaultActiveKey="LocalStorage" items={tabList} />
+    </div>
+  );
 };
 
 export default App;

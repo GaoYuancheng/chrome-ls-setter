@@ -19,7 +19,7 @@
     {
       "matches": ["<all_urls>"],
       "js": ["./src/contentScript.js"],
-      "run_at": "document_start"
+      "run_at": "document_end"
     }
   ],
   "permissions": ["cookies", "tabs", "storage", "scripting", "activeTab"]
