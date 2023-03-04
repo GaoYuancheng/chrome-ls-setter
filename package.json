@@ -1,6 +1,7 @@
 {
   "name": "web-storage-setter",
   "version": "0.0.1",
+  "author": "gyc",
   "scripts": {
     "dev": "vite",
     "watch": "vite build --watch",
@@ -35,6 +36,5 @@
     "rollup-plugin-copy": "^3.4.0",
     "typescript": "^4.3.2",
     "vite": "^3.0.7"
-  },
-  "author": "gyc"
+  }
 }
