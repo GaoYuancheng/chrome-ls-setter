@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@ant-design/icons': ^5.0.1
   '@types/chrome': ^0.0.217
   '@types/node': ^16.11.6
   '@types/react': ^17.0.0
@@ -23,6 +24,7 @@ specifiers:
   vite-plugin-imp: ^2.3.1
 
 dependencies:
+  '@ant-design/icons': 5.0.1_sfoxds7t5ydpegc3knd667wn6m
   '@types/chrome': 0.0.217
   antd: 5.2.2_sfoxds7t5ydpegc3knd667wn6m
   dayjs: 1.11.7

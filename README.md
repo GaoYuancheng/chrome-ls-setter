@@ -10,22 +10,15 @@
 
 ![](src/assets/operation.png)
 
-1. 在 页面 A 点击存储
-
-此时插件会记录 页面 A 的信息
-
-2. 切换到 页面 B 并且选择一个之前存储的 页面 LS 和 需要的 key
-
-3. 在 页面 B 点击使用
-
-插件会把之前记录的 A 的 LS 覆盖到 B 中
-
 ### 安装
 
-1. pnpm i
-2. pnpm run build 并且把 dist 文件夹作为一个插件拖入 chrome 中
+1. 打开 chrome://extensions/ 勾选上开发者模式
+2. 拖入 web-storage-setter 文件夹即可
+3. 重启浏览器
 
-### 开发 热更新
+![](src/assets/install.png)
+
+### 开发
 
 1. pnpm i
 2. pnpm run watch 并且把 dist 文件夹作为一个插件拖入 chrome 中
@@ -65,4 +58,4 @@
 
 ### TODO
 
-[ ] 支持用户自定义 默认选中值
+[] 支持用户自定义 默认选中值

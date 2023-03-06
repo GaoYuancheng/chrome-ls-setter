@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { getCurrentTab } from "../../utils";
 import styles from "./index.module.less";
 import dayjs from "dayjs";
+import { DEFAULT_SELECT_KEYS } from "../../constants";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 interface DomianListItem {
   updateTime?: number;
@@ -11,7 +13,6 @@ interface DomianListItem {
 }
 
 const TIME_FORMAT = "MM-DD HH:mm:ss";
-const DEFAULT_SELECT_KEYS = ["refreshToken", "accessToken", "site3-f-ue"];
 const CHROME_STORAGE_KEY = "CHROME_STORAGE_LOCATSTORAGE";
 const DOMAIN_NUM_LIMIT = 3;
 
@@ -96,8 +97,6 @@ const LocalStorageSetter = () => {
     });
     message.success("操作成功");
     init();
-    // setCurLS(data);
-    // console.log("setCurrentLSToStorage");
   };
 
   // 设置 选中的域名localStorage 到 当前页面
@@ -145,6 +144,7 @@ const LocalStorageSetter = () => {
             clearCurrentLS();
           }}
           size="small"
+          title="清空当前页面的localStorage"
         >
           清空
         </Button>
@@ -204,6 +204,10 @@ const LocalStorageSetter = () => {
       <div>
         <div>
           <span className={styles.label}>可用key</span>
+          <QuestionCircleOutlined
+            className={styles.keySelectTipIcon}
+            title={`默认选中 ${DEFAULT_SELECT_KEYS.join(", ")}`}
+          />
           {localStorageKeysList.length > 0 && (
             <Checkbox
               indeterminate={indeterminate}
