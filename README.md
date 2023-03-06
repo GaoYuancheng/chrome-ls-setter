@@ -1,14 +1,7 @@
 ## web-storage-setter
 
-支持再页签中转移 localStorage
+支持在页签中转移 localStorage
 适用于公司本地开发
-
-### 使用方式
-
-页面 A 页面 B
-我们要把 A 的 localStorage 转移到 B 中
-
-![](src/assets/operation.png)
 
 ### 安装
 
@@ -17,6 +10,13 @@
 3. 重启浏览器
 
 ![](src/assets/install.png)
+
+### 使用方式
+
+页面 A 页面 B
+我们要把 A 的 localStorage 转移到 B 中
+
+![](src/assets/operation.png)
 
 ### 如何更新？
 
