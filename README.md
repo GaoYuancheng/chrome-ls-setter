@@ -7,7 +7,7 @@
 
 1. 打开 chrome://extensions/ 勾选上开发者模式
 2. 拖入 web-storage-setter 文件夹即可
-3. 重启浏览器
+3. 重启浏览器 重启浏览器 重启浏览器
 
 ![](src/assets/install.png)
 
@@ -63,3 +63,4 @@
 ### TODO
 
 [] 支持用户自定义 默认选中值
+[] 使用 chrome.tabs.excuse 替换 content_scripts 做到不用重启浏览器也能使用
