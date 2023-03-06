@@ -1,0 +1,1 @@
+chrome.runtime.onMessage.addListener((e,r,o)=>{console.log("onMessage",e);const{type:a,payload:t}=e;a==="getLocalStorage"&&o({data:window.localStorage}),a==="setLocalStorage"&&(Object.keys(t).forEach(c=>{window.localStorage.setItem(c,t[c])}),o({success:!0})),a==="clearLocalStorage"&&(window.localStorage.clear(),o({success:!0}))});

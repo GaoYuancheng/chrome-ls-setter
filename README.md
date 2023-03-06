@@ -18,6 +18,10 @@
 
 ![](src/assets/install.png)
 
+### 如何更新？
+
+进入仓库直接 git pull 即可
+
 ### 开发
 
 1. pnpm i

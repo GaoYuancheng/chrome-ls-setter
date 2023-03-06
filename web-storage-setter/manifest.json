@@ -1,0 +1,26 @@
+{
+  "name": "web-storage-setter",
+  "version": "1.0",
+  "description": "点点鼠标就能实现localStorage的转移",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "./src/background.js"
+  },
+  "icons": {
+    "16": "./src/assets/cat.png",
+    "32": "./src/assets/cat.png",
+    "48": "./src/assets/cat.png",
+    "128": "./src/assets/cat.png"
+  },
+  "action": {
+    "default_popup": "./src/index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["./src/contentScript.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": ["cookies", "tabs", "storage", "scripting", "activeTab"]
+}
