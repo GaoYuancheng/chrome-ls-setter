@@ -1,6 +1,6 @@
 import { Button, Checkbox, Col, Input, message, Radio, Row, Space } from "antd";
 import React, { useEffect, useState } from "react";
-import { getCurrentTab } from "../../utils";
+import { getCurrentTab, getKeysInObj } from "../../utils";
 import styles from "./index.module.less";
 import dayjs from "dayjs";
 import { DEFAULT_SELECT_KEYS } from "../../constants";
@@ -35,18 +35,17 @@ const LocalStorageSetter = () => {
     const data = (await chrome.storage.local.get(CHROME_STORAGE_KEY)) || {};
     const { [CHROME_STORAGE_KEY]: domainListFromStorage = [] } = data || {};
     console.log("init", data);
-    const defaultKeys: string[] = [];
-    const lastIndex =
-      domainListFromStorage.length > 0 ? domainListFromStorage.length - 1 : 0;
-    const { value = {} } = domainListFromStorage[lastIndex] || {};
-    Object.keys(value).forEach((key) => {
-      if (DEFAULT_SELECT_KEYS.includes(key)) {
-        defaultKeys.push(key);
-      }
-    });
+    // const selectIndex =
+    // domainListFromStorage.length > 0 ? domainListFromStorage.length - 1 : 0;
+
+    // 选中第一个
+    const selectIndex = 0;
+    const { value = {} } = domainListFromStorage[selectIndex] || {};
+    const defaultKeys: string[] = getKeysInObj(value, DEFAULT_SELECT_KEYS);
+
     setSelectLSKeys(defaultKeys);
     setDomainList([...domainListFromStorage]);
-    setSelectedDomainIndex(lastIndex);
+    setSelectedDomainIndex(selectIndex);
   };
 
   const getValueFromObj = (keys: string[]) => {
@@ -73,9 +72,9 @@ const LocalStorageSetter = () => {
     const { [CHROME_STORAGE_KEY]: domainListFromStorage = [] } =
       (await chrome.storage.local.get(CHROME_STORAGE_KEY)) || {};
     const newDomainList = [...domainListFromStorage];
-    newDomainList.push(data);
+    newDomainList.unshift(data);
     if (newDomainList.length > DOMAIN_NUM_LIMIT) {
-      newDomainList.shift();
+      newDomainList.pop();
     }
     await chrome.storage.local.set({
       [CHROME_STORAGE_KEY]: newDomainList,

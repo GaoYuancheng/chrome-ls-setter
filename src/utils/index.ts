@@ -25,3 +25,15 @@ export const getCurrentTab = async () => {
   const [tab] = await chrome.tabs.query(queryOptions);
   return tab;
 };
+
+// 获取筛选obj中有的key
+export const getKeysInObj = (
+  obj: Record<string, string>,
+  keys: string[]
+): string[] => {
+  const res: string[] = [];
+  keys.forEach((key) => {
+    if (obj[key]) res.push(key);
+  });
+  return res;
+};
