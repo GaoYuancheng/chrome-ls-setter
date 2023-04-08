@@ -11,7 +11,6 @@
 
 1. 打开 chrome://extensions/ 勾选上开发者模式
 2. 拖入 web-storage-setter 文件夹即可
-3. 重启浏览器 重启浏览器 重启浏览器
 
 ![](src/assets/install.png)
 
