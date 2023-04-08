@@ -1,5 +1,5 @@
 import { Button, Checkbox, Col, Input, message, Radio, Row, Space } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getCurrentTab, getKeysInObj } from "../../utils";
 import styles from "./index.module.less";
 import dayjs from "dayjs";
@@ -16,10 +16,32 @@ const TIME_FORMAT = "MM-DD HH:mm:ss";
 const CHROME_STORAGE_KEY = "CHROME_STORAGE_LOCATSTORAGE";
 const DOMAIN_NUM_LIMIT = 3;
 
+const getLocalStorageFunc = () => {
+  // 不使用 ... 就获取不到最新的值
+  const res = { ...window.localStorage };
+  return { data: res };
+};
+
+const setLocalStorageFunc = (payload: Record<string, any>) => {
+  console.log(payload);
+  Object.keys(payload).forEach((key) => {
+    window.localStorage.setItem(key, payload[key]);
+  });
+  return { success: true };
+};
+
+const clearLocalStorageFunc = () => {
+  window.localStorage.clear();
+
+  return { success: true };
+};
+
 const LocalStorageSetter = () => {
   const [selectedDomainIndex, setSelectedDomainIndex] = useState<number>(0);
   const [selectLSKeys, setSelectLSKeys] = useState<string[]>([]);
   const [domainList, setDomainList] = useState<DomianListItem[]>([]);
+
+  const currentTabRef = useRef<chrome.tabs.Tab | undefined>();
 
   const { value: curLS = {} } = domainList[selectedDomainIndex] || {};
 
@@ -32,6 +54,9 @@ const LocalStorageSetter = () => {
   const checkAll = selectLSKeys.length === localStorageKeysList.length;
 
   const init = async () => {
+    // 初始化当前的 tab信息
+    currentTabRef.current = await getCurrentTab();
+
     const data = (await chrome.storage.local.get(CHROME_STORAGE_KEY)) || {};
     const { [CHROME_STORAGE_KEY]: domainListFromStorage = [] } = data || {};
     console.log("init", data);
@@ -58,13 +83,18 @@ const LocalStorageSetter = () => {
 
   // 清空当前 localStorage
   const clearCurrentLS = async () => {
-    const tab = await getCurrentTab();
+    const tab = currentTabRef.current;
     if (!tab?.id) return;
-    await chrome.tabs.sendMessage(tab.id, {
-      type: "clearLocalStorage",
+
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: clearLocalStorageFunc,
     });
+
     message.success("操作成功");
   };
+
+  console.log("selectKeys", selectLSKeys);
 
   // 更新 chromeStorage
   const updateChromeStorage = async (data: DomianListItem) => {
@@ -84,16 +114,24 @@ const LocalStorageSetter = () => {
   // 设置当前 localStorage 到 storage
   const setCurrentLSToStorage = async () => {
     // 获取当前tab信息
-    const tab = await getCurrentTab();
+    const tab = currentTabRef.current;
     if (!tab?.id) return;
-    const { data } = await chrome.tabs.sendMessage(tab.id, {
-      type: "getLocalStorage",
+
+    const [
+      {
+        result: { data },
+      },
+    ] = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: getLocalStorageFunc,
     });
+
     await updateChromeStorage({
       updateTime: dayjs().valueOf(),
       domain: tab?.url || "",
       value: data,
     });
+
     message.success("操作成功");
     init();
   };
@@ -101,16 +139,23 @@ const LocalStorageSetter = () => {
   // 设置 选中的域名localStorage 到 当前页面
   const setTargetLSToCurrentTab = async () => {
     try {
-      const tab = await getCurrentTab();
+      const tab = currentTabRef.current;
       if (!tab?.id) return;
-      await chrome.tabs.sendMessage(tab.id, {
-        type: "setLocalStorage",
-        payload: getValueFromObj(selectLSKeys),
+
+      await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: setLocalStorageFunc,
+        args: [getValueFromObj(selectLSKeys)] as any,
       });
+
       message.success("操作成功");
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const changeDomainIndex = (value: number) => {
+    setSelectedDomainIndex(value);
   };
 
   useEffect(() => {
@@ -172,7 +217,7 @@ const LocalStorageSetter = () => {
         <div className={styles.domainsList}>
           <Radio.Group
             onChange={(e) => {
-              setSelectedDomainIndex(e.target.value);
+              changeDomainIndex(e.target.value);
             }}
             value={selectedDomainIndex}
             size="small"

@@ -3,6 +3,10 @@
 支持在页签中转移 localStorage
 适用于公司本地开发
 
+> chrome extension V3 文档
+>
+> https://developer.chrome.com/docs/extensions/mv3/
+
 ### 安装
 
 1. 打开 chrome://extensions/ 勾选上开发者模式
@@ -63,4 +67,5 @@
 ### TODO
 
 [] 支持用户自定义 默认选中值
-[] 使用 chrome.tabs.excuse 替换 content_scripts 做到不用重启浏览器也能使用
+[x] 使用 chrome.tabs.excuse 替换 content_scripts 做到不用重启浏览器也能使用
+[] 切换选中时，全选按钮的状态显示问题，需要 重新计算 selectKey（存在 defaultKey 就选中）

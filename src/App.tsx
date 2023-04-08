@@ -1,5 +1,4 @@
-import React from "react";
-
+import React, { useEffect } from "react";
 import { Tabs } from "antd";
 import LocalStorageSetter from "./components/LocalStorageSetter";
 import CookieSetter from "./components/CookieSetter";
