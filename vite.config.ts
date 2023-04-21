@@ -38,6 +38,7 @@ export default defineConfig({
   build: {
     outDir: `${outputDir}/src`,
     // sourcemap: true,
+    // assetsDir : '' // 默认为assets css等输出目录
     rollupOptions: {
       input: {
         // contentJs: path.resolve(__dirname, "./src/contentJs.ts"),
@@ -51,17 +52,20 @@ export default defineConfig({
       },
       plugins: [
         copy({
+          // verbose: true, // 打出日志
+          // hook: "buildEnd", // buildStart、buildEnd、generateBundle、writeBundle
+          flatten: false,
           targets: [
             {
               src: "./manifest.json",
               dest: `./${outputDir}`,
               // transform: (contents, filename) =>
               //   contents.toString().replace(/\.\/dist\//g, "./"), // ./dist/ => ./
-            }, //执行拷贝
+            },
             {
-              src: "./src/assets",
-              dest: `./${outputDir}/src`,
-            }, //执行拷贝
+              src: "./static/**/*",
+              dest: `./${outputDir}`,
+            },
           ],
         }),
       ],

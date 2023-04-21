@@ -12,14 +12,14 @@
 1. 打开 chrome://extensions/ 勾选上开发者模式
 2. 拖入 web-storage-setter 文件夹即可
 
-![](src/assets/install.png)
+![](static/img/install.png)
 
 ### 使用方式
 
 页面 A 页面 B
 我们要把 A 的 localStorage 转移到 B 中
 
-![](src/assets/operation.png)
+![](static/img/operation.png)
 
 ### 如何更新？
 
@@ -66,5 +66,11 @@
 ### TODO
 
 [] 支持用户自定义 默认选中值
+
 [x] 使用 chrome.tabs.excuse 替换 content_scripts 做到不用重启浏览器也能使用
+
 [] 切换选中时，全选按钮的状态显示问题，需要 重新计算 selectKey（存在 defaultKey 就选中）
+
+[] 请求拦截、返回 mock 数据
+
+[] 支持修改地址栏 通过 tag 形式加上参数

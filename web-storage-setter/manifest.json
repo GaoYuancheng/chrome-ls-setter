@@ -7,10 +7,10 @@
     "service_worker": "./src/background.js"
   },
   "icons": {
-    "16": "./src/assets/cat.png",
-    "32": "./src/assets/cat.png",
-    "48": "./src/assets/cat.png",
-    "128": "./src/assets/cat.png"
+    "16": "./static/img/cat.png",
+    "32": "./static/img/cat.png",
+    "48": "./static/img/cat.png",
+    "128": "./static/img/cat.png"
   },
   "action": {
     "default_popup": "./src/index.html"

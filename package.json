@@ -1,6 +1,6 @@
 {
   "name": "web-storage-setter",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "gyc",
   "scripts": {
     "dev": "vite",
@@ -36,6 +36,6 @@
     "lint-staged": "^12.3.5",
     "rollup-plugin-copy": "^3.4.0",
     "typescript": "^4.3.2",
-    "vite": "^3.0.7"
+    "vite": "^4.3.0"
   }
 }
