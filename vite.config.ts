@@ -21,6 +21,12 @@ export default defineConfig({
       ],
     }),
   ],
+  // 配置项目别名
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
   server: {
     port: 4000,
   },
@@ -37,7 +43,7 @@ export default defineConfig({
 
   build: {
     outDir: `${outputDir}/src`,
-    // sourcemap: true,
+    sourcemap: true,
     // assetsDir : '' // 默认为assets css等输出目录
     rollupOptions: {
       input: {

@@ -37,3 +37,25 @@ export const getKeysInObj = (
   });
   return res;
 };
+
+// 获取 localStorage
+export const getLocalStorageFunc = () => {
+  // 不使用 ... 就获取不到最新的值
+  const res = { ...window.localStorage };
+  return { data: res };
+};
+
+// 设置 localStorage
+export const setLocalStorageFunc = (payload: Record<string, any>) => {
+  Object.keys(payload).forEach((key) => {
+    window.localStorage.setItem(key, payload[key]);
+  });
+  return { success: true };
+};
+
+// 清空 localStorage
+export const clearLocalStorageFunc = () => {
+  window.localStorage.clear();
+
+  return { success: true };
+};

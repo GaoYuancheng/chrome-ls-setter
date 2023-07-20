@@ -1,10 +1,17 @@
 import { Button, Checkbox, Col, Input, message, Radio, Row, Space } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { getCurrentTab, getKeysInObj } from "../../utils";
 import styles from "./index.module.less";
 import dayjs from "dayjs";
 import { DEFAULT_SELECT_KEYS } from "../../constants";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+import classnames from "classnames";
+import {
+  getLocalStorageFunc,
+  setLocalStorageFunc,
+  clearLocalStorageFunc,
+} from "@/utils";
+import { GlobalContext } from "@/models/useGlobalContext";
 
 interface DomianListItem {
   updateTime?: number;
@@ -16,32 +23,14 @@ const TIME_FORMAT = "MM-DD HH:mm:ss";
 const CHROME_STORAGE_KEY = "CHROME_STORAGE_LOCATSTORAGE";
 const DOMAIN_NUM_LIMIT = 3;
 
-const getLocalStorageFunc = () => {
-  // 不使用 ... 就获取不到最新的值
-  const res = { ...window.localStorage };
-  return { data: res };
-};
-
-const setLocalStorageFunc = (payload: Record<string, any>) => {
-  console.log(payload);
-  Object.keys(payload).forEach((key) => {
-    window.localStorage.setItem(key, payload[key]);
-  });
-  return { success: true };
-};
-
-const clearLocalStorageFunc = () => {
-  window.localStorage.clear();
-
-  return { success: true };
-};
-
 const LocalStorageSetter = () => {
+  const { currentTab, refresh } = useContext(GlobalContext);
+
   const [selectedDomainIndex, setSelectedDomainIndex] = useState<number>(0);
   const [selectLSKeys, setSelectLSKeys] = useState<string[]>([]);
   const [domainList, setDomainList] = useState<DomianListItem[]>([]);
 
-  const currentTabRef = useRef<chrome.tabs.Tab | undefined>();
+  // const currentTabRef = useRef<chrome.tabs.Tab | undefined>();
 
   const { value: curLS = {} } = domainList[selectedDomainIndex] || {};
 
@@ -54,12 +43,9 @@ const LocalStorageSetter = () => {
   const checkAll = selectLSKeys.length === localStorageKeysList.length;
 
   const init = async () => {
-    // 初始化当前的 tab信息
-    currentTabRef.current = await getCurrentTab();
-
     const data = (await chrome.storage.local.get(CHROME_STORAGE_KEY)) || {};
     const { [CHROME_STORAGE_KEY]: domainListFromStorage = [] } = data || {};
-    console.log("init", data);
+
     // const selectIndex =
     // domainListFromStorage.length > 0 ? domainListFromStorage.length - 1 : 0;
 
@@ -82,19 +68,16 @@ const LocalStorageSetter = () => {
   };
 
   // 清空当前 localStorage
-  const clearCurrentLS = async () => {
-    const tab = currentTabRef.current;
-    if (!tab?.id) return;
+  // const clearCurrentLS = async () => {
+  //   if (!currentTab?.id) return;
 
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: clearLocalStorageFunc,
-    });
+  //   chrome.scripting.executeScript({
+  //     target: { tabId: currentTab.id },
+  //     func: clearLocalStorageFunc,
+  //   });
 
-    message.success("操作成功");
-  };
-
-  console.log("selectKeys", selectLSKeys);
+  //   message.success("操作成功");
+  // };
 
   // 更新 chromeStorage
   const updateChromeStorage = async (data: DomianListItem) => {
@@ -113,22 +96,20 @@ const LocalStorageSetter = () => {
 
   // 设置当前 localStorage 到 storage
   const setCurrentLSToStorage = async () => {
-    // 获取当前tab信息
-    const tab = currentTabRef.current;
-    if (!tab?.id) return;
+    if (!currentTab?.id) return;
 
     const [
       {
         result: { data },
       },
     ] = await chrome.scripting.executeScript({
-      target: { tabId: tab.id },
+      target: { tabId: currentTab.id },
       func: getLocalStorageFunc,
     });
 
     await updateChromeStorage({
       updateTime: dayjs().valueOf(),
-      domain: tab?.url || "",
+      domain: currentTab?.url || "",
       value: data,
     });
 
@@ -139,16 +120,16 @@ const LocalStorageSetter = () => {
   // 设置 选中的域名localStorage 到 当前页面
   const setTargetLSToCurrentTab = async () => {
     try {
-      const tab = currentTabRef.current;
-      if (!tab?.id) return;
+      if (!currentTab?.id) return;
 
       await chrome.scripting.executeScript({
-        target: { tabId: tab.id },
+        target: { tabId: currentTab.id },
         func: setLocalStorageFunc,
         args: [getValueFromObj(selectLSKeys)] as any,
       });
 
       message.success("操作成功");
+      refresh();
     } catch (err) {
       console.log(err);
     }
@@ -159,61 +140,72 @@ const LocalStorageSetter = () => {
   };
 
   useEffect(() => {
+    if (!currentTab) return;
     init();
-  }, []);
+  }, [currentTab]);
+
+  const operateBtnDom = (
+    <div className={styles.operateBtn}>
+      <Button
+        type="primary"
+        size="small"
+        onClick={() => {
+          setCurrentLSToStorage();
+        }}
+      >
+        存储
+      </Button>
+      <Button
+        type="primary"
+        onClick={() => {
+          setTargetLSToCurrentTab();
+        }}
+        size="small"
+      >
+        使用
+      </Button>
+      {/* <Button
+        onClick={() => {
+          clearCurrentLS();
+        }}
+        size="small"
+        title="清空当前页面的localStorage"
+      >
+        清空
+      </Button> */}
+
+      {/* <Button
+    onClick={async () => {
+      const data =
+        (await chrome.storage.local.get([CHROME_STORAGE_KEY])) || {};
+      console.log("getdata", data);
+    }}
+    size="small"
+  >
+    获取
+  </Button> */}
+      {/* <Button
+    onClick={() => {
+      chrome.storage.local.clear();
+    }}
+  >
+    清空chromeSL
+  </Button> */}
+    </div>
+  );
 
   return (
     <div className={styles.localStorageSetter}>
-      <div className={styles.operateBtn}>
-        <Button
-          type="primary"
-          size="small"
-          onClick={() => {
-            setCurrentLSToStorage();
-          }}
-        >
-          存储
-        </Button>
-        <Button
-          type="primary"
-          onClick={() => {
-            setTargetLSToCurrentTab();
-          }}
-          size="small"
-        >
-          使用
-        </Button>
-        <Button
-          onClick={() => {
-            clearCurrentLS();
-          }}
-          size="small"
-          title="清空当前页面的localStorage"
-        >
-          清空
-        </Button>
-
-        {/* <Button
-          onClick={async () => {
-            const data =
-              (await chrome.storage.local.get([CHROME_STORAGE_KEY])) || {};
-            console.log("getdata", data);
-          }}
-          size="small"
-        >
-          获取
-        </Button> */}
-        {/* <Button
-          onClick={() => {
-            chrome.storage.local.clear();
-          }}
-        >
-          清空chromeSL
-        </Button> */}
-      </div>
-
       <div className={styles.domains}>
-        <div className={styles.label}>当前可用存储</div>
+        <div
+          className={classnames({
+            [styles.label]: true,
+            [styles.operateLabel]: true,
+          })}
+        >
+          <div className={styles.labelText}>当前可用存储</div>
+          <div>{operateBtnDom}</div>
+        </div>
         <div className={styles.domainsList}>
           <Radio.Group
             onChange={(e) => {

@@ -1,0 +1,25 @@
+.userInfo {
+  padding: 8px;
+  padding-bottom: 0;
+  display: flex;
+
+  .infoItem {
+    padding: 4px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    // 用户名
+    &:nth-child(1) {
+      width: 70px;
+    }
+    // 层级
+    &:nth-child(2) {
+      width: 70px;
+    }
+    // id
+    &:nth-child(4) {
+      width: 70px;
+    }
+  }
+}

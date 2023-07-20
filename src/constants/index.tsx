@@ -4,4 +4,5 @@ export const DEFAULT_SELECT_KEYS = [
   "refreshToken",
   "accessToken",
   "site3-f-ue",
+  "currentUser",
 ];
