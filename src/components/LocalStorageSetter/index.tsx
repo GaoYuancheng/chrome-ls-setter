@@ -146,6 +146,16 @@ const LocalStorageSetter = () => {
 
   const operateBtnDom = (
     <div className={styles.operateBtn}>
+      {/* <Button
+        type="primary"
+        size="small"
+        onClick={() => {
+          // setCurrentLSToStorage();
+          console.log(11);
+        }}
+      >
+        复制 set 方法
+      </Button> */}
       <Button
         type="primary"
         size="small"

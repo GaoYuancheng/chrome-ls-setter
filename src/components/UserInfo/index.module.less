@@ -10,16 +10,23 @@
     overflow: hidden;
 
     // 用户名
-    &:nth-child(1) {
-      width: 70px;
+    &.userName {
+      flex-basis: 50px;
     }
     // 层级
-    &:nth-child(2) {
-      width: 70px;
+    &.userLevel {
+      flex-basis: 70px;
     }
+
+    // 项目名称
+    &.coPjSubName {
+      // flex-basis: 60px;
+      width: 230px;
+    }
+
     // id
-    &:nth-child(4) {
-      width: 70px;
+    &.coPjSubId {
+      flex-basis: 60px;
     }
   }
 }

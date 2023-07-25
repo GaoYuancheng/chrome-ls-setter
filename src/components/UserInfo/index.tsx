@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, CSSProperties } from "react";
 import Styles from "./index.module.less";
 import classnames from "classnames";
 import { GlobalContext } from "@/models/useGlobalContext";
@@ -12,9 +12,11 @@ interface Props {
 interface InfoItem {
   label: string;
   key: string;
-  className?: string;
-  toolTip?: boolean;
+  classNames?: string[];
+  // toolTip?: boolean;
+  style?: CSSProperties;
 }
+
 const typeMap: Record<
   string,
   {
@@ -28,11 +30,12 @@ const typeMap: Record<
       {
         label: "coName",
         key: "coName",
-        toolTip: true,
+        classNames: [Styles.coPjSubName],
       },
       {
         label: "coId",
         key: "coId",
+        classNames: [Styles.coPjSubId],
       },
     ],
   },
@@ -42,11 +45,12 @@ const typeMap: Record<
       {
         label: "pjName",
         key: "pjName",
-        toolTip: true,
+        classNames: [Styles.coPjSubName],
       },
       {
         label: "pjId",
         key: "pjId",
+        classNames: [Styles.coPjSubId],
       },
     ],
   },
@@ -56,11 +60,12 @@ const typeMap: Record<
       {
         label: "subCoName",
         key: "subCoName",
-        toolTip: true,
+        classNames: [Styles.coPjSubName],
       },
       {
         label: "currentDepartmentId",
         key: "currentDepartmentId",
+        classNames: [Styles.coPjSubId],
       },
     ],
   },
@@ -94,19 +99,20 @@ const UserInfo: React.FC<Props> = ({ className = "", ...rest }) => {
   };
 
   const infoItemRender = (item: InfoItem) => {
+    const { classNames = [], style = {} } = item;
     const childDom = (
-      <div className={Styles.infoItem}>
-        {item.label}: {userInfo[item.key]}
+      <div className={classnames(Styles.infoItem, classNames)} style={style}>
+        {userInfo[item.key]}
       </div>
     );
-    if (item?.toolTip)
-      return (
-        <Tooltip title={userInfo[item.key]} key={item.key}>
+    return (
+      <>
+        {/* <Divider type="vertical" /> */}
+        <Tooltip title={`${item.label}：${userInfo[item.key]}`} key={item.key}>
           {childDom}
         </Tooltip>
-      );
-
-    return childDom;
+      </>
+    );
   };
 
   useEffect(() => {
@@ -118,16 +124,29 @@ const UserInfo: React.FC<Props> = ({ className = "", ...rest }) => {
     getUserInfo();
   }, [currentTab]);
 
+  const isEmpty = JSON.stringify(userInfo) === "{}";
   const { type } = userInfo || {};
   const targetTypeInfo = typeMap[type as keyof typeof typeMap] || {};
 
   return (
     <div className={classnames(Styles.userInfo, className)} {...rest}>
-      <Tooltip title={userInfo?.userName}>
-        <div className={Styles.infoItem}>用户名: {userInfo?.userName}</div>
-      </Tooltip>
-      <div className={Styles.infoItem}>层级: {targetTypeInfo?.label}</div>
-      {(targetTypeInfo?.infoList || []).map(infoItemRender)}
+      {isEmpty && "暂无用户信息"}
+      {!isEmpty && (
+        <>
+          <Tooltip title={`用户名：${userInfo?.userName}`}>
+            <div className={classnames(Styles.infoItem, Styles.userName)}>
+              {userInfo?.userName}
+            </div>
+          </Tooltip>
+          {/* <Divider type="vertical" /> */}
+          <Tooltip title={`层级：${targetTypeInfo?.label}`}>
+            <div className={classnames(Styles.infoItem, Styles.userLevel)}>
+              {targetTypeInfo?.label}
+            </div>
+          </Tooltip>
+          {(targetTypeInfo?.infoList || []).map(infoItemRender)}
+        </>
+      )}
     </div>
   );
 };
