@@ -1,13 +1,15 @@
 import { Button, Checkbox, Col, Input, message, Radio, Row, Space } from "antd";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { getCurrentTab, getKeysInObj } from "../../utils";
 import styles from "./index.module.less";
 import dayjs from "dayjs";
 import { DEFAULT_SELECT_KEYS } from "../../constants";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 import {
+  getKeysInObj,
+  templateForSetLocalStorage,
   getLocalStorageFunc,
+  copyToClipboard,
   setLocalStorageFunc,
   clearLocalStorageFunc,
 } from "@/utils";
@@ -59,10 +61,10 @@ const LocalStorageSetter = () => {
     setSelectedDomainIndex(selectIndex);
   };
 
-  const getValueFromObj = (keys: string[]) => {
+  const getValueFromObj = (keys: string[], obj: Record<string, any>) => {
     const res: Record<string, any> = {};
     keys.forEach((key) => {
-      res[key] = curLS[key];
+      res[key] = obj[key];
     });
     return res;
   };
@@ -125,7 +127,7 @@ const LocalStorageSetter = () => {
       await chrome.scripting.executeScript({
         target: { tabId: currentTab.id },
         func: setLocalStorageFunc,
-        args: [getValueFromObj(selectLSKeys)] as any,
+        args: [getValueFromObj(selectLSKeys, curLS)] as any,
       });
 
       message.success("操作成功");
@@ -139,6 +141,26 @@ const LocalStorageSetter = () => {
     setSelectedDomainIndex(value);
   };
 
+  // set 方法
+  const copyForSetLS = async () => {
+    if (!currentTab?.id) return;
+    const template = templateForSetLocalStorage;
+    const [
+      {
+        result: { data },
+      },
+    ] = await chrome.scripting.executeScript({
+      target: { tabId: currentTab.id },
+      func: getLocalStorageFunc,
+    });
+
+    const resData = getValueFromObj(selectLSKeys, data);
+    console.log("JSON.stringify(resData)", resData, JSON.stringify(resData));
+    const res = template.replace("$1", JSON.stringify(resData));
+    copyToClipboard(res);
+    message.success("复制成功");
+  };
+
   useEffect(() => {
     if (!currentTab) return;
     init();
@@ -146,16 +168,15 @@ const LocalStorageSetter = () => {
 
   const operateBtnDom = (
     <div className={styles.operateBtn}>
-      {/* <Button
+      <Button
         type="primary"
         size="small"
         onClick={() => {
-          // setCurrentLSToStorage();
-          console.log(11);
+          copyForSetLS();
         }}
       >
         复制 set 方法
-      </Button> */}
+      </Button>
       <Button
         type="primary"
         size="small"

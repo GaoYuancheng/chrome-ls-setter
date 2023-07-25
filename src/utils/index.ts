@@ -59,3 +59,10 @@ export const clearLocalStorageFunc = () => {
 
   return { success: true };
 };
+
+export const templateForSetLocalStorage = `(() => {
+    const params = $1
+    Object.keys(params).forEach((key) => {
+      window.localStorage.setItem(key, params[key]);
+    });
+  })()`;
