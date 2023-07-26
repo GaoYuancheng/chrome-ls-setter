@@ -145,17 +145,8 @@ const LocalStorageSetter = () => {
   const copyForSetLS = async () => {
     if (!currentTab?.id) return;
     const template = templateForSetLocalStorage;
-    const [
-      {
-        result: { data },
-      },
-    ] = await chrome.scripting.executeScript({
-      target: { tabId: currentTab.id },
-      func: getLocalStorageFunc,
-    });
 
-    const resData = getValueFromObj(selectLSKeys, data);
-    console.log("JSON.stringify(resData)", resData, JSON.stringify(resData));
+    const resData = getValueFromObj(selectLSKeys, curLS);
     const res = template.replace("$1", JSON.stringify(resData));
     copyToClipboard(res);
     message.success("复制成功");
