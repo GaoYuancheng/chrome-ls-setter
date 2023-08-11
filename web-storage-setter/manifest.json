@@ -22,5 +22,6 @@
       "run_at": "document_end"
     }
   ],
-  "permissions": ["cookies", "tabs", "storage", "scripting", "activeTab"]
+  "permissions": ["cookies", "tabs", "storage", "scripting", "activeTab"],
+  "host_permissions": ["*//localhost"]
 }
