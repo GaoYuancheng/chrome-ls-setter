@@ -6,3 +6,5 @@ export const DEFAULT_SELECT_KEYS = [
   "site3-f-ue",
   "currentUser",
 ];
+
+export const WSS_CONFIG = "WSS_CONFIG";

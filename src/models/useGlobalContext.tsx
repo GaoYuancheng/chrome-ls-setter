@@ -1,8 +1,11 @@
 import React, { useContext, createContext, useState, useEffect } from "react";
-import { getCurrentTab } from "@/utils";
+import { getCurrentTab, getLocalStorageFunc } from "@/utils";
 
 interface Store {
   currentTab?: chrome.tabs.Tab;
+  currentLocalStorage?: Window["localStorage"] & {
+    WSS_CONFIG?: string;
+  };
 }
 
 interface ContextValue extends Store {
@@ -13,14 +16,32 @@ interface ContextValue extends Store {
 const GlobalContext = createContext<ContextValue>({
   refresh: () => null,
   setStore: () => null,
+  currentLocalStorage: undefined,
 });
 
 const GlobalContextProvider: React.FC = ({ children }) => {
   const [store, setStore] = useState<Store>({});
 
+  // 获取当前tab的localStorage]
+  // TODO: 后续考虑是否拆分到 localStorage组件中
+  const getLocal = async (currentTab: Store["currentTab"]) => {
+    if (!currentTab?.id) return;
+    const [
+      {
+        result: { data },
+      },
+    ] = await chrome.scripting.executeScript({
+      target: { tabId: currentTab.id },
+      func: getLocalStorageFunc,
+    });
+
+    return data;
+  };
+
   const init = async () => {
     const tab = await getCurrentTab();
-    setStore({ currentTab: tab });
+    const data = await getLocal(tab);
+    setStore({ currentTab: tab, currentLocalStorage: data });
   };
 
   useEffect(() => {

@@ -26,7 +26,8 @@ const CHROME_STORAGE_KEY = "CHROME_STORAGE_LOCATSTORAGE";
 const DOMAIN_NUM_LIMIT = 3;
 
 const LocalStorageSetter = () => {
-  const { currentTab, refresh } = useContext(GlobalContext);
+  const { currentTab, refresh, currentLocalStorage } =
+    useContext(GlobalContext);
 
   const [selectedDomainIndex, setSelectedDomainIndex] = useState<number>(0);
   const [selectLSKeys, setSelectLSKeys] = useState<string[]>([]);
@@ -98,21 +99,12 @@ const LocalStorageSetter = () => {
 
   // 设置当前 localStorage 到 storage
   const setCurrentLSToStorage = async () => {
-    if (!currentTab?.id) return;
-
-    const [
-      {
-        result: { data },
-      },
-    ] = await chrome.scripting.executeScript({
-      target: { tabId: currentTab.id },
-      func: getLocalStorageFunc,
-    });
+    if (!currentTab?.id || !currentLocalStorage) return;
 
     await updateChromeStorage({
       updateTime: dayjs().valueOf(),
       domain: currentTab?.url || "",
-      value: data,
+      value: currentLocalStorage,
     });
 
     message.success("操作成功");
