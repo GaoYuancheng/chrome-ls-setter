@@ -8,3 +8,8 @@ export const DEFAULT_SELECT_KEYS = [
 ];
 
 export const WSS_CONFIG = "WSS_CONFIG";
+
+export interface WssConfig {
+  fixPmsRootStyle?: boolean;
+  skipPmsLogin?: boolean;
+}

@@ -33,3 +33,11 @@
 ### v0.0.6
 
 - 新增复制 set 方法，可以跨浏览器设置 localStorage
+
+### v0.0.7
+
+- localStorage 获取提升到 store 中
+- 拆分 contentScripts 为 start 和 end
+- 新增新框架跳过登录功能
+- 新增修复新框架本地样式功能
+- 布局更新

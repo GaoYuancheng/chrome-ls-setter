@@ -1,0 +1,2 @@
+(()=>{const s="WSS_CONFIG";(()=>{const o=window.localStorage.getItem(s)||"{}",n=window.localStorage.getItem("currentUser")||"{}",i=JSON.parse(n),{skipPmsLogin:c}=JSON.parse(o);if(!c)return;let r;Object.defineProperty(window,"__PMS_CONSOLE__",{get:function(){return r},set:function(t){var e;(e=t==null?void 0:t.user)!=null&&e.login&&(t.user.login=()=>{},t.user.type=i.type),r=t}})})()})();
+//# sourceMappingURL=contentScriptStart.js.map

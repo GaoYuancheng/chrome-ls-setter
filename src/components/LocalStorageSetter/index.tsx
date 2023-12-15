@@ -1,19 +1,27 @@
-import { Button, Checkbox, Col, Input, message, Radio, Row, Space } from "antd";
+import {
+  Button,
+  Checkbox,
+  Col,
+  message,
+  Popover,
+  Radio,
+  Row,
+  Space,
+} from "antd";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "./index.module.less";
 import dayjs from "dayjs";
 import { DEFAULT_SELECT_KEYS } from "../../constants";
-import { QuestionCircleOutlined } from "@ant-design/icons";
+import { DownOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 import {
   getKeysInObj,
   templateForSetLocalStorage,
-  getLocalStorageFunc,
   copyToClipboard,
   setLocalStorageFunc,
-  clearLocalStorageFunc,
 } from "@/utils";
 import { GlobalContext } from "@/models/useGlobalContext";
+import ConfigCheckbox from "./components/ConfigCheckbox";
 
 interface DomianListItem {
   updateTime?: number;
@@ -155,15 +163,6 @@ const LocalStorageSetter = () => {
         type="primary"
         size="small"
         onClick={() => {
-          copyForSetLS();
-        }}
-      >
-        复制 set 方法
-      </Button>
-      <Button
-        type="primary"
-        size="small"
-        onClick={() => {
           setCurrentLSToStorage();
         }}
       >
@@ -178,6 +177,42 @@ const LocalStorageSetter = () => {
       >
         使用
       </Button>
+
+      <Popover
+        placement="bottomRight"
+        arrow={false}
+        content={
+          <>
+            <div>
+              <ConfigCheckbox name="skipPmsLogin">跳过登录</ConfigCheckbox>
+            </div>
+            <div>
+              <ConfigCheckbox name="fixPmsRootStyle">
+                修复root样式
+              </ConfigCheckbox>
+            </div>
+            <div>
+              <Button
+                type="primary"
+                size="small"
+                onClick={() => {
+                  copyForSetLS();
+                }}
+              >
+                复制 set 方法
+              </Button>
+            </div>
+          </>
+        }
+      >
+        <Button size="small" type="primary">
+          <Space>
+            更多
+            <DownOutlined />
+          </Space>
+        </Button>
+      </Popover>
+
       {/* <Button
         onClick={() => {
           clearCurrentLS();
@@ -242,11 +277,6 @@ const LocalStorageSetter = () => {
                   </div>
                 </Radio>
               ))}
-
-              {/* <Radio value={4}>
-            More...
-            {value === 4 ? <Input style={{ width: 100, marginLeft: 10 }} /> : null}
-          </Radio> */}
             </Space>
           </Radio.Group>
         </div>
@@ -289,18 +319,6 @@ const LocalStorageSetter = () => {
           </Checkbox.Group>
         </div>
       </div>
-
-      {/* <Row>
-        <Col span={16}>
-          <Input
-            placeholder="目标域名"
-            value={domainValue}
-            onChange={(e) => {
-              setDomainValue(e.target.value);
-            }}
-          />
-        </Col>
-      </Row> */}
     </div>
   );
 };

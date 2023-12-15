@@ -49,7 +49,14 @@ const GlobalContextProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <GlobalContext.Provider value={{ ...store, setStore, refresh: init }}>
+    <GlobalContext.Provider
+      value={{
+        ...store,
+        setStore,
+        // TODO: 有时候只需要更新一个变量
+        refresh: init,
+      }}
+    >
       {children}
     </GlobalContext.Provider>
   );

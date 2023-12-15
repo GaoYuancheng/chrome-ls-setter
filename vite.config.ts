@@ -45,12 +45,17 @@ export default defineConfig({
     outDir: `${outputDir}/src`,
     sourcemap: true,
     // assetsDir : '' // 默认为assets css等输出目录
+    chunkSizeWarningLimit: Number.MAX_SAFE_INTEGER,
     rollupOptions: {
       input: {
         // contentJs: path.resolve(__dirname, "./src/contentJs.ts"),
         index: path.resolve(__dirname, "./index.html"),
         background: path.resolve(__dirname, "./src/background.ts"),
-        contentScript: path.resolve(__dirname, "./src/contentScript.ts"),
+        contentScriptStart: path.resolve(
+          __dirname,
+          "./src/contentScriptStart.ts"
+        ),
+        contentScriptEnd: path.resolve(__dirname, "./src/contentScriptEnd.ts"),
         // manifest: path.resolve(__dirname, "./manifest.json"),
       },
       output: {
