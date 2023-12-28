@@ -11,7 +11,12 @@ import { WssConfig } from "@/constants";
     // @ts-ignore
     if (fixPmsRootStyle) {
       // @ts-ignore
-      document.getElementById("root-slave").style.display = "block";
+      const targetDom =
+        document.getElementById("root") ||
+        document.getElementById("root-slave") ||
+        "";
+      if (!targetDom) return;
+      targetDom.style.display = "block";
       console.log("root-salve样式修复成功--------");
     }
   };
