@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import { Tabs } from "antd";
 import LocalStorageSetter from "./components/LocalStorageSetter";
 import CookieSetter from "./components/CookieSetter";
-import "./index.less";
 import Styles from "./index.module.less";
 import UserInfo from "./components/UserInfo";
 import { GlobalContextProvider } from "@/models/useGlobalContext";
+import VersionInfo from "./components/VersionInfo";
+import ReactDOM from "react-dom";
 
 const tabList = [
   {
@@ -24,6 +25,7 @@ const App: React.FC = () => {
   return (
     <GlobalContextProvider>
       <div className={Styles.chromeStorageChanger}>
+        {/* <VersionInfo /> */}
         <UserInfo className={Styles.userInfo} />
         <Tabs size="small" defaultActiveKey="LocalStorage" items={tabList} />
       </div>
@@ -31,4 +33,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+ReactDOM.render(<App />, document.getElementById("root"));

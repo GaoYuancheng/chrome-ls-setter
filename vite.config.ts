@@ -42,20 +42,24 @@ export default defineConfig({
   },
 
   build: {
-    outDir: `${outputDir}/src`,
+    outDir: `${outputDir}`,
     sourcemap: true,
     // assetsDir : '' // 默认为assets css等输出目录
     chunkSizeWarningLimit: Number.MAX_SAFE_INTEGER,
     rollupOptions: {
       input: {
         // contentJs: path.resolve(__dirname, "./src/contentJs.ts"),
-        index: path.resolve(__dirname, "./index.html"),
-        background: path.resolve(__dirname, "./src/background.ts"),
-        contentScriptStart: path.resolve(
+        defaultPopup: path.resolve(__dirname, "defaultPopup.html"),
+        optionsPage: path.resolve(__dirname, "optionsPage.html"),
+        "src/background": path.resolve(__dirname, "./src/background.ts"),
+        "src/contentScriptStart": path.resolve(
           __dirname,
           "./src/contentScriptStart.ts"
         ),
-        contentScriptEnd: path.resolve(__dirname, "./src/contentScriptEnd.ts"),
+        "src/contentScriptEnd": path.resolve(
+          __dirname,
+          "./src/contentScriptEnd.ts"
+        ),
         // manifest: path.resolve(__dirname, "./manifest.json"),
       },
       output: {

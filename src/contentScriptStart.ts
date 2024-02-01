@@ -1,1 +1,1 @@
-import "@/components/LocalStorageSetter/contentScriptStart";
+import "@/pages/DefaultPopup/components/LocalStorageSetter/contentScriptStart";

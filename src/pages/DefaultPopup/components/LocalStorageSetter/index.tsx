@@ -7,11 +7,12 @@ import {
   Radio,
   Row,
   Space,
+  Tooltip,
 } from "antd";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "./index.module.less";
 import dayjs from "dayjs";
-import { DEFAULT_SELECT_KEYS } from "../../constants";
+import { DEFAULT_SELECT_KEYS } from "@/constants";
 import { DownOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 import {
@@ -22,6 +23,7 @@ import {
 } from "@/utils";
 import { GlobalContext } from "@/models/useGlobalContext";
 import ConfigCheckbox from "./components/ConfigCheckbox";
+import UserInfoLine from "./components/UserInfoLine";
 
 interface DomianListItem {
   updateTime?: number;
@@ -267,8 +269,18 @@ const LocalStorageSetter = () => {
               {domainList.map((item, index) => (
                 <Radio value={index} key={item.updateTime}>
                   <div className={styles.domainsItem}>
+                    {/* <Tooltip
+                      title={
+                        <UserInfoLine
+                          userInfo={domainList[index].value.currentUser}
+                        />
+                      }
+                    >
+                      <div className={styles.domian} title={item.domain}>
+                        {item.domain}
+                      </div>
+                    </Tooltip> */}
                     <div className={styles.domian} title={item.domain}>
-                      {/* <span className={styles.domainText}>{item.domain}</span> */}
                       {item.domain}
                     </div>
                     <div className={styles.updateTime}>

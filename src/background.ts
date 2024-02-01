@@ -1,1 +1,1 @@
-import "./components/LocalStorageSetter/background";
+import "@/pages/DefaultPopup/components/LocalStorageSetter/background";
