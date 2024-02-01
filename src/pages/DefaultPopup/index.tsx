@@ -21,7 +21,7 @@ const tabList = [
   },
 ];
 
-const App: React.FC = () => {
+const DefaultPopup: React.FC = () => {
   return (
     <GlobalContextProvider>
       <div className={Styles.chromeStorageChanger}>
@@ -33,4 +33,4 @@ const App: React.FC = () => {
   );
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<DefaultPopup />, document.getElementById("root"));
