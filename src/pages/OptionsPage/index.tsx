@@ -1,7 +1,28 @@
-import { Tabs } from "antd";
+import { Button, Tabs } from "antd";
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import Styles from "./index.module.less";
+import LSOptions from "./components/LSOptions";
+import CookieOptions from "./components/CookieOptions";
+import CommonOptions from "./components/CommonOptions";
+
+const tabsList = [
+  {
+    key: "common",
+    label: "公共设置",
+    children: <CommonOptions />,
+  },
+  {
+    key: "LS",
+    label: "LocalStorage 设置",
+    children: <LSOptions />,
+  },
+  {
+    key: "cookie",
+    label: "Cookie 设置",
+    children: <CookieOptions />,
+  },
+];
 
 const OptionsPage = () => {
   const init = async () => {
@@ -12,19 +33,23 @@ const OptionsPage = () => {
     init();
   }, []);
 
+  // 保存
+  const saveConfig = () => {
+    console.log("saveConfig");
+  };
+
   return (
     <div className={Styles.optionsPage}>
-      {/* <Tabs
+      <Tabs
+        className={Styles.optionsTabs}
         tabPosition="left"
-        items={new Array(3).fill(null).map((_, i) => {
-          const id = String(i + 1);
-          return {
-            label: `Tab ${id}`,
-            key: id,
-            children: `Content of Tab ${id}`,
-          };
-        })}
-      /> */}
+        items={tabsList}
+      />
+      <div className={Styles.confirmButton}>
+        <Button type="primary" onClick={saveConfig}>
+          保存
+        </Button>
+      </div>
     </div>
   );
 };
