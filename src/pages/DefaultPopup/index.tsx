@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, Tooltip } from "antd";
 import LocalStorageSetter from "./components/LocalStorageSetter";
 import CookieSetter from "./components/CookieSetter";
@@ -25,9 +25,6 @@ const tabList = [
 const DefaultPopup: React.FC = () => {
   const tabBarExtraContent = (
     <div className={Styles.tabBarExtraContent}>
-      <Tooltip title={`所在目录：${__DIRNAME}`}>
-        <ExclamationCircleOutlined />
-      </Tooltip>
       <Tooltip title="设置">
         <SettingOutlined
           onClick={() => {
