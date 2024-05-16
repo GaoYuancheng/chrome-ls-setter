@@ -1,6 +1,6 @@
 {
   "name": "web-storage-setter",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "gyc",
   "scripts": {
     "dev": "vite",
@@ -16,10 +16,12 @@
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@types/chrome": "^0.0.217",
+    "@types/lodash": "^4.17.1",
     "antd": "^5.2.2",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.7",
     "less": "^4.1.3",
+    "lodash": "^4.17.21",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "vite-plugin-imp": "^2.3.1"

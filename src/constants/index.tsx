@@ -8,7 +8,8 @@ export const DEFAULT_SELECT_KEYS = [
 ];
 
 export const WSS_CONFIG = "WSS_CONFIG";
-
+export const CHROME_STORAGE_OPTION_KEY = "CHROME_STORAGE_OPTION";
+export const CHROME_STORAGE_OPTION__LS_KEY = "localStorage";
 export interface WssConfig {
   fixPmsRootStyle?: boolean;
   skipPmsLogin?: boolean;

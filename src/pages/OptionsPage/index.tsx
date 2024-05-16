@@ -5,6 +5,19 @@ import Styles from "./index.module.less";
 import LSOptions from "./components/LSOptions";
 import CookieOptions from "./components/CookieOptions";
 import CommonOptions from "./components/CommonOptions";
+import OptionsFormWrapper, { Options } from "./components/OptionsForm";
+import { CHROME_STORAGE_OPTION_KEY } from "./_data";
+
+const commonOptions: Options[] = [
+  {
+    label: "默认全选",
+    name: "defaultSelectAll",
+    type: "checkbox",
+    formItemProps: {
+      valuePropName: "checked",
+    },
+  },
+];
 
 const tabsList = [
   {
@@ -15,7 +28,9 @@ const tabsList = [
   {
     key: "LS",
     label: "LocalStorage 设置",
-    children: <LSOptions />,
+    children: (
+      <OptionsFormWrapper options={commonOptions} optionKey="localStorage" />
+    ),
   },
   {
     key: "cookie",
@@ -26,7 +41,7 @@ const tabsList = [
 
 const OptionsPage = () => {
   const init = async () => {
-    console.log(chrome.storage);
+    chrome.storage.local.get(CHROME_STORAGE_OPTION_KEY).then(console.log);
   };
 
   useEffect(() => {
@@ -45,10 +60,19 @@ const OptionsPage = () => {
         tabPosition="left"
         items={tabsList}
       />
-      <div className={Styles.confirmButton}>
+      {/* <div className={Styles.confirmButton}>
         <Button type="primary" onClick={saveConfig}>
           保存
         </Button>
+      </div> */}
+      <div style={{ position: "absolute", right: 0 }}>
+        <pre>
+          {JSON.stringify(
+            chrome.storage.local.get(CHROME_STORAGE_OPTION_KEY),
+            null,
+            2
+          )}
+        </pre>
       </div>
     </div>
   );

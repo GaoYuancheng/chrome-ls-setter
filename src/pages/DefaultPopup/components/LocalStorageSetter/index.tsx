@@ -12,7 +12,11 @@ import {
 import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "./index.module.less";
 import dayjs from "dayjs";
-import { DEFAULT_SELECT_KEYS } from "@/constants";
+import {
+  CHROME_STORAGE_OPTION__LS_KEY,
+  CHROME_STORAGE_OPTION_KEY,
+  DEFAULT_SELECT_KEYS,
+} from "@/constants";
 import { DownOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import classnames from "classnames";
 import {
@@ -43,6 +47,8 @@ const LocalStorageSetter = () => {
   const [selectLSKeys, setSelectLSKeys] = useState<string[]>([]);
   const [domainList, setDomainList] = useState<DomianListItem[]>([]);
 
+  const currentOptionsRef = useRef<any>({});
+  const { defaultSelectAll = false } = currentOptionsRef.current;
   // const currentTabRef = useRef<chrome.tabs.Tab | undefined>();
 
   const { value: curLS = {} } = domainList[selectedDomainIndex] || {};
@@ -55,17 +61,29 @@ const LocalStorageSetter = () => {
     !!selectLSKeys.length && selectLSKeys.length < localStorageKeysList.length;
   const checkAll = selectLSKeys.length === localStorageKeysList.length;
 
+  const getResSelectedKeys = (LSValue = {}, selectedAll: boolean) => {
+    if (selectedAll) {
+      return Object.keys(LSValue);
+    }
+    return getKeysInObj(LSValue, DEFAULT_SELECT_KEYS);
+  };
+
   const init = async () => {
     const data = (await chrome.storage.local.get(CHROME_STORAGE_KEY)) || {};
     const { [CHROME_STORAGE_KEY]: domainListFromStorage = [] } = data || {};
 
+    const {
+      [CHROME_STORAGE_OPTION_KEY]: { [CHROME_STORAGE_OPTION__LS_KEY]: options },
+    } = (await chrome.storage.local.get(CHROME_STORAGE_OPTION_KEY)) || {};
+    const { defaultSelectAll = false } = options || {};
+    currentOptionsRef.current = options;
     // const selectIndex =
     // domainListFromStorage.length > 0 ? domainListFromStorage.length - 1 : 0;
 
     // 选中第一个
     const selectIndex = 0;
     const { value = {} } = domainListFromStorage[selectIndex] || {};
-    const defaultKeys: string[] = getKeysInObj(value, DEFAULT_SELECT_KEYS);
+    const defaultKeys: string[] = getResSelectedKeys(value, defaultSelectAll);
 
     setSelectLSKeys(defaultKeys);
     setDomainList([...domainListFromStorage]);
@@ -141,6 +159,11 @@ const LocalStorageSetter = () => {
 
   const changeDomainIndex = (value: number) => {
     setSelectedDomainIndex(value);
+    const selectedKeys = getResSelectedKeys(
+      domainList[value].value,
+      defaultSelectAll
+    );
+    setSelectLSKeys(selectedKeys);
   };
 
   // set 方法
