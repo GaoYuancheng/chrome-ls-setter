@@ -13,7 +13,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "./index.module.less";
 import dayjs from "dayjs";
 import {
-  CHROME_STORAGE_OPTION__LS_KEY,
+  CHROME_STORAGE_OPTION_LS_KEY,
   CHROME_STORAGE_OPTION_KEY,
   DEFAULT_SELECT_KEYS,
 } from "@/constants";
@@ -71,10 +71,13 @@ const LocalStorageSetter = () => {
   const init = async () => {
     const data = (await chrome.storage.local.get(CHROME_STORAGE_KEY)) || {};
     const { [CHROME_STORAGE_KEY]: domainListFromStorage = [] } = data || {};
-
+    // CHROME_STORAGE_OPTION.localStorage
     const {
-      [CHROME_STORAGE_OPTION_KEY]: { [CHROME_STORAGE_OPTION__LS_KEY]: options },
+      [CHROME_STORAGE_OPTION_KEY]: {
+        [CHROME_STORAGE_OPTION_LS_KEY]: options = {},
+      } = {},
     } = (await chrome.storage.local.get(CHROME_STORAGE_OPTION_KEY)) || {};
+
     const { defaultSelectAll = false } = options || {};
     currentOptionsRef.current = options;
     // const selectIndex =
@@ -112,7 +115,6 @@ const LocalStorageSetter = () => {
 
   // 更新 chromeStorage
   const updateChromeStorage = async (data: DomianListItem) => {
-    console.log("updateChromeStorage", data);
     const { [CHROME_STORAGE_KEY]: domainListFromStorage = [] } =
       (await chrome.storage.local.get(CHROME_STORAGE_KEY)) || {};
     const newDomainList = [...domainListFromStorage];
