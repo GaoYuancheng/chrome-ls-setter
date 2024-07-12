@@ -50,4 +50,4 @@
 
 ### v0.0.9
 
-- 获取 indexDB 中的内容
+- 修改了分公司的人员信息展示 原先是通过 userInfo.type 判断 现在改为 currentDepartmentId 来判断

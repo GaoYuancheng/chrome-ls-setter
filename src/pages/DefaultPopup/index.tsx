@@ -21,11 +21,11 @@ const tabList = [
     key: "Cookie",
     children: <CookieSetter />,
   },
-  {
-    label: `IndexDB`,
-    key: "IndexDB",
-    children: <IndexDBSetter />,
-  },
+  // {
+  //   label: `IndexDB`,
+  //   key: "IndexDB",
+  //   children: <IndexDBSetter />,
+  // },
 ];
 
 const DefaultPopup: React.FC = () => {

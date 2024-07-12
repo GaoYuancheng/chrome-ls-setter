@@ -125,8 +125,9 @@ const UserInfo: React.FC<Props> = ({ className = "", ...rest }) => {
   }, [currentTab]);
 
   const isEmpty = JSON.stringify(userInfo) === "{}";
-  const { type } = userInfo || {};
-  const targetTypeInfo = typeMap[type as keyof typeof typeMap] || {};
+  const { type, currentDepartmentId } = userInfo || {};
+  const resType = currentDepartmentId ? 3 : type;
+  const targetTypeInfo = typeMap[resType as keyof typeof typeMap] || {};
 
   return (
     <div className={classnames(Styles.userInfo, className)} {...rest}>
