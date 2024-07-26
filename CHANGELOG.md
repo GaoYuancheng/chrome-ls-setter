@@ -51,3 +51,8 @@
 ### v0.0.9
 
 - 修改了分公司的人员信息展示 原先是通过 userInfo.type 判断 现在改为 currentDepartmentId 来判断
+
+### v0.0.10
+
+- 去除 修复 root 样式
+- 新增 隐藏灰度侧边栏

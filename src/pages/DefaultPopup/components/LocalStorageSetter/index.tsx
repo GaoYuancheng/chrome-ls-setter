@@ -213,10 +213,13 @@ const LocalStorageSetter = () => {
             <div>
               <ConfigCheckbox name="skipPmsLogin">跳过登录</ConfigCheckbox>
             </div>
-            <div>
+            {/* <div>
               <ConfigCheckbox name="fixPmsRootStyle">
                 修复root样式
               </ConfigCheckbox>
+            </div> */}
+            <div>
+              <ConfigCheckbox name="hiddenGrayAside">隐藏灰度</ConfigCheckbox>
             </div>
             <div>
               <Button
