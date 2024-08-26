@@ -62,14 +62,14 @@ const IndexDBSetter = () => {
   // }, []);
   return (
     <Form wrapperCol={{ span: 16 }} labelCol={{ span: 4 }}>
-      <Form.Item label="name">
-        <AutoComplete />
+      <Form.Item label="DBname">
+        <AutoComplete placeholder="PMS_ZHUANG_ORGANIZATION" />
       </Form.Item>
       <Form.Item label="storeName">
-        <AutoComplete />
+        <AutoComplete placeholder="keyvaluepairs" />
       </Form.Item>
-      <Form.Item label="tableKey">
-        <AutoComplete />
+      <Form.Item label="valueKey">
+        <AutoComplete placeholder="PMS_ZHUANG_ORGANIZATION_11524" />
       </Form.Item>
     </Form>
   );
